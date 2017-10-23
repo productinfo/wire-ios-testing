@@ -1,14 +1,16 @@
 version: 2
 jobs:
   dependencies:
+    environment:
+      - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/master"
     macos:
       xcode: "9.0"
     steps:
     - checkout
     - run: |
-        curl -O "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/master/environment.sh"
+        curl -O "${DEPENDENCIES_BASE_URL}/master/environment.sh"
         bash environment.sh
-        curl -O "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/master/dependencies.sh"
+        curl -O "${DEPENDENCIES_BASE_URL}/master/dependencies.sh"
     - run: bash dependencies.sh
 
 workflows:
