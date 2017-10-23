@@ -12,9 +12,20 @@ jobs:
         bash environment.sh
         curl -O "${DEPENDENCIES_BASE_URL}/dependencies.sh"
     - run: bash dependencies.sh
+  build:
+    environment:
+      - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/master"
+    macos:
+      xcode: "9.0"
+    steps:
+    - checkout
+    - run: |
+        curl -O "${DEPENDENCIES_BASE_URL}/build.sh"
+    - run: bash build.sh
 
 workflows:
   version: 2
   build-and-test:
     jobs:
       - dependencies
+      - build
