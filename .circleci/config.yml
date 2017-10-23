@@ -1,6 +1,8 @@
 version: 2
 jobs:
   dependencies:
+    macos:
+      xcode: "9.0.1"
     environment:
       - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/master"
     steps:
