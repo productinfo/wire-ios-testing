@@ -8,7 +8,9 @@ jobs:
     steps:
     - checkout
     - run: |
-        curl -O "${DEPENDENCIES_BASE_URL}/master/dependencies.sh"
+        curl -O "${DEPENDENCIES_BASE_URL}/environment.sh"
+        bash environment.sh
+        curl -O "${DEPENDENCIES_BASE_URL}/dependencies.sh"
     - run: bash dependencies.sh
 
 workflows:
