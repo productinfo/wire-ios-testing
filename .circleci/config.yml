@@ -1,23 +1,15 @@
-defaults: &defaults
-  macos:
-    xcode: "9.0.1"
-  environment:
-    - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/master"
-
 version: 2
 jobs:
   dependencies:
-    <<: *defaults
+    macos:
+      xcode: "9.0.1"
     steps:
     - checkout
-    - run:
-      command: |
-        curl -O "${DEPENDENCIES_BASE_URL}/environment.sh"
+    - run: |
+        curl -O "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/master/environment.sh"
         bash environment.sh
-        curl -O "${DEPENDENCIES_BASE_URL}/dependencies.sh"
-    - run:
-      command: bash dependencies.sh
-
+        curl -O "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/master/dependencies.sh"
+    - run: bash dependencies.sh
 
 workflows:
   version: 2
