@@ -20,6 +20,8 @@ jobs:
     steps:
     - checkout
     - run: |
+        curl -O "${DEPENDENCIES_BASE_URL}/environment.sh"
+        bash environment.sh
         curl -O "${DEPENDENCIES_BASE_URL}/build.sh"
     - run: bash build.sh
 
