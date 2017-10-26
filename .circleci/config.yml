@@ -35,6 +35,35 @@ jobs:
     - run: 
         name: "Build"
         command: bash build.sh
+    - save_cache:
+        key: v1-{{ .Revision }}
+        paths: DerivedData
+    - store_artifacts:
+        path: xcode_build.log
+  test:
+    environment:
+      - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/circle2"
+    macos:
+      xcode: "9.0"
+    steps:
+    - checkout
+    - restore_cache:
+        key: v1-{{ checksum "Cartfile.resolved" }}
+    - restore_cache:
+        key: v1-{{ .Revision }}
+    - run: 
+        name: "Download scripts"
+        command: |
+          curl -O "${DEPENDENCIES_BASE_URL}/environment.sh"
+          bash environment.sh
+          curl -O "${DEPENDENCIES_BASE_URL}/test.sh"
+    - run: 
+        name: "Test"
+        command: bash test.sh
+    - store_artifacts:
+        path: xcode_build.log
+    - store_artifacts:
+        path: junit/tests.xml
 
 
 workflows:
@@ -45,3 +74,7 @@ workflows:
       - build:
           requires:
             - dependencies
+      - build:
+          requires:
+            - build
+
