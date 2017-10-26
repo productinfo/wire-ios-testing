@@ -2,7 +2,7 @@ version: 2
 jobs:
   dependencies:
     environment:
-      - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/master"
+      - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/circle2"
     macos:
       xcode: "9.0"
     steps:
@@ -19,7 +19,7 @@ jobs:
         paths: Carthage/Build/iOS
   build:
     environment:
-      - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/master"
+      - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/circle2"
     macos:
       xcode: "9.0"
     steps:
@@ -36,7 +36,7 @@ jobs:
         name: "Build"
         command: bash build.sh
 
-        
+
 workflows:
   version: 2
   build-and-test:
