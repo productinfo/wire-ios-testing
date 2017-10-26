@@ -8,15 +8,15 @@ jobs:
     steps:
     - checkout
     - restore_cache:
-        key: v1-{{ checksum "Cartfile.resolved" }}
+        key: v2-{{ checksum "Cartfile.resolved" }}
     - run: 
         name: "Get dependencies"
         command: |
           curl -O "${DEPENDENCIES_BASE_URL}/dependencies.sh"
           bash dependencies.sh
     - save_cache:
-        key: v1-{{ checksum "Cartfile.resolved" }}
-        paths: Carthage/Build/iOS
+        key: v2-{{ checksum "Cartfile.resolved" }}
+        paths: Carthage/Build
   build:
     environment:
       - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/circle2"
@@ -25,7 +25,7 @@ jobs:
     steps:
     - checkout
     - restore_cache:
-        key: v1-{{ checksum "Cartfile.resolved" }}
+        key: v2-{{ checksum "Cartfile.resolved" }}
     - run: 
         name: "Download scripts"
         command: |
@@ -48,7 +48,7 @@ jobs:
     steps:
     - checkout
     - restore_cache:
-        key: v1-{{ checksum "Cartfile.resolved" }}
+        key: v2-{{ checksum "Cartfile.resolved" }}
     - restore_cache:
         key: v1-{{ .Revision }}
     - run: 
