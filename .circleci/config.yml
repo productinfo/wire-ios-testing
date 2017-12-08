@@ -48,7 +48,9 @@ jobs:
         command: bash build.sh
     - save_cache: *gems_cache
     - save_cache: *carthage_cache
-    - save_cache: *buildfiles_cache
+    - persist_to_workspace:
+        root: DerivedData
+        paths: Build/Products/*
     - store_artifacts:
         path: xcode_build.log
 
@@ -59,7 +61,8 @@ jobs:
     - run: *setup-environment
     - restore_cache: *gems_cache
     - restore_cache: *carthage_cache
-    - restore_cache: *buildfiles_cache
+    - attach_workspace:
+        at: DerivedData
     - run: 
         name: "Test"
         command: bash test.sh
