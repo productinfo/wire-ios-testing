@@ -46,6 +46,8 @@ jobs:
     - run: 
         name: "Build"
         command: bash build.sh
+    - save_cache: *gems_cache
+    - save_cache: *carthage_cache
     - save_cache: *buildfiles_cache
     - store_artifacts:
         path: xcode_build.log
