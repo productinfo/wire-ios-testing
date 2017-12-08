@@ -32,6 +32,9 @@ jobs:
     - checkout
     - restore_cache: *gems_cache
     - restore_cache: *carthage_cache
+    - run:
+        name: "Set Ruby Version"
+        command:  echo "ruby-2.3" > ~/.ruby-version
     - run: 
         name: "Get dependencies"
         command: |
