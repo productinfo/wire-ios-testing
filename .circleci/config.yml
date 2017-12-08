@@ -61,9 +61,14 @@ jobs:
     - run: 
         name: "Test"
         command: bash test.sh
+    - run: 
+        name: "Post test"
+        command: bash post_test.sh
     - store_artifacts:
         path: xcode_build.log
     - store_artifacts:
+        path: SnapshotResults
+    - store_test_results:
         path: junit/tests.xml
 
 
