@@ -25,8 +25,16 @@ buildfiles_cache: &buildfiles_cache
 
 # ------------Ruby version----------------
 set-ruby-version: &set-ruby-version
-    name: "Set Ruby Version"
-    command:  echo "ruby-2.3" > ~/.ruby-version
+  name: "Set Ruby Version"
+  command:  echo "ruby-2.3" > ~/.ruby-version
+
+# ------------Environment-----------------
+setup-environment: &setup-environment
+  name: "Set environment variables"
+  command: |
+    curl -O "${DEPENDENCIES_BASE_URL}/environment.sh"
+    bash environment.sh
+
 
 version: 2
 jobs:
@@ -53,12 +61,10 @@ jobs:
     - restore_cache: *gems_cache
     - restore_cache: *carthage_cache
     - run: *set-ruby-version
+    - run: *setup-environment
     - run: 
-        name: "Download scripts"
-        command: |
-          curl -O "${DEPENDENCIES_BASE_URL}/environment.sh"
-          bash environment.sh
-          curl -O "${DEPENDENCIES_BASE_URL}/build.sh"
+        name: "Download build script"
+        command: curl -O "${DEPENDENCIES_BASE_URL}/build.sh"
     - run: 
         name: "Build"
         command: bash build.sh
@@ -75,12 +81,10 @@ jobs:
     - restore_cache: *carthage_cache
     - restore_cache: *buildfiles_cache
     - run: *set-ruby-version
+    - run: *setup-environment
     - run: 
-        name: "Download scripts"
-        command: |
-          curl -O "${DEPENDENCIES_BASE_URL}/environment.sh"
-          bash environment.sh
-          curl -O "${DEPENDENCIES_BASE_URL}/test.sh"
+        name: "Download test script"
+        command: curl -O "${DEPENDENCIES_BASE_URL}/test.sh"
     - run: 
         name: "Test"
         command: bash test.sh
