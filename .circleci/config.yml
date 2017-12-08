@@ -3,7 +3,7 @@ defaults: &defaults
   environment:
     - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/circle2"
   macos:
-    xcode: "9.0"
+    xcode: "9.0.1"
 
 
 version: 2
@@ -15,6 +15,8 @@ jobs:
     - checkout
     - restore_cache:
         key: v2-{{ checksum "Cartfile.resolved" }}
+    - restore_cache:
+        key: v2-{{ checksum "Gemfile.lock" }}   
     - run: 
         name: "Get dependencies"
         command: |
@@ -23,7 +25,9 @@ jobs:
     - save_cache:
         key: v2-{{ checksum "Cartfile.resolved" }}
         paths: Carthage/Build
-
+    - save_cache:
+        key: v2-{{ checksum "Gemfile.lock" }}
+        paths: ~/.gem
 
   build:
     <<: *defaults
@@ -31,6 +35,8 @@ jobs:
     - checkout
     - restore_cache:
         key: v2-{{ checksum "Cartfile.resolved" }}
+    - restore_cache:
+        key: v2-{{ checksum "Gemfile.lock" }}   
     - run: 
         name: "Download scripts"
         command: |
@@ -53,6 +59,8 @@ jobs:
     - checkout
     - restore_cache:
         key: v2-{{ checksum "Cartfile.resolved" }}
+    - restore_cache:
+        key: v2-{{ checksum "Gemfile.lock" }}
     - restore_cache:
         key: v1-{{ .Revision }}
     - run: 
