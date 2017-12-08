@@ -27,13 +27,8 @@ buildfiles_cache: &buildfiles_cache
 setup-environment: &setup-environment
   name: "Setup environment"
   command: |
-    curl -O "${DEPENDENCIES_BASE_URL}/.ruby-version"
-    curl -O "${DEPENDENCIES_BASE_URL}/dependencies.sh"
     curl -O "${DEPENDENCIES_BASE_URL}/environment.sh"
-    curl -O "${DEPENDENCIES_BASE_URL}/build.sh"
-    curl -O "${DEPENDENCIES_BASE_URL}/test.sh"
     bash environment.sh
-
 
 version: 2
 jobs:
@@ -42,10 +37,10 @@ jobs:
     <<: *defaults
     steps:
     - checkout
+    - run: *setup-environment
     - restore_cache: 
         key: v3-{{ checksum "Gemfile.lock" }}
     - restore_cache: *carthage_cache
-    - run: *setup-environment
     - run: 
         name: "Get dependencies"
         command: |
@@ -57,9 +52,9 @@ jobs:
     <<: *defaults
     steps:
     - checkout
+    - run: *setup-environment
     - restore_cache: *gems_cache
     - restore_cache: *carthage_cache
-    - run: *setup-environment
     - run: 
         name: "Build"
         command: bash build.sh
@@ -72,10 +67,10 @@ jobs:
     <<: *defaults
     steps:
     - checkout
+    - run: *setup-environment
     - restore_cache: *gems_cache
     - restore_cache: *carthage_cache
     - restore_cache: *buildfiles_cache
-    - run: *setup-environment
     - run: 
         name: "Test"
         command: bash test.sh
