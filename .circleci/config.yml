@@ -10,7 +10,7 @@ defaults: &defaults
 
 # Gems
 gems_cache: &gems_cache
-  key: v2-{{ checksum "Gemfile.lock" }}
+  key: v3-{{ checksum "Gemfile.lock" }}
   paths: ~/.gem
 
 # Carthage
