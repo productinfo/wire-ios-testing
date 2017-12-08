@@ -23,16 +23,15 @@ buildfiles_cache: &buildfiles_cache
   key: v2-{{ .Revision }}
   paths: DerivedData
 
-# ------------Ruby version----------------
-set-ruby-version: &set-ruby-version
-  name: "Set Ruby Version"
-  command:  echo "ruby-2.3" > ~/.ruby-version
-
 # ------------Environment-----------------
 setup-environment: &setup-environment
-  name: "Set environment variables"
+  name: "Setup environment"
   command: |
+    echo "ruby-2.3" > ~/.ruby-version
+    curl -O "${DEPENDENCIES_BASE_URL}/dependencies.sh"
     curl -O "${DEPENDENCIES_BASE_URL}/environment.sh"
+    curl -O "${DEPENDENCIES_BASE_URL}/build.sh"
+    curl -O "${DEPENDENCIES_BASE_URL}/test.sh"
     bash environment.sh
 
 
@@ -45,11 +44,10 @@ jobs:
     - checkout
     - restore_cache: *gems_cache
     - restore_cache: *carthage_cache
-    - run: *set-ruby-version
+    - run: *setup-environment
     - run: 
         name: "Get dependencies"
         command: |
-          curl -O "${DEPENDENCIES_BASE_URL}/dependencies.sh"
           bash dependencies.sh
     - save_cache: *gems_cache
     - save_cache: *carthage_cache
@@ -60,11 +58,7 @@ jobs:
     - checkout
     - restore_cache: *gems_cache
     - restore_cache: *carthage_cache
-    - run: *set-ruby-version
     - run: *setup-environment
-    - run: 
-        name: "Download build script"
-        command: curl -O "${DEPENDENCIES_BASE_URL}/build.sh"
     - run: 
         name: "Build"
         command: bash build.sh
@@ -80,11 +74,7 @@ jobs:
     - restore_cache: *gems_cache
     - restore_cache: *carthage_cache
     - restore_cache: *buildfiles_cache
-    - run: *set-ruby-version
     - run: *setup-environment
-    - run: 
-        name: "Download test script"
-        command: curl -O "${DEPENDENCIES_BASE_URL}/test.sh"
     - run: 
         name: "Test"
         command: bash test.sh
