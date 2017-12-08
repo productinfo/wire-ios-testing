@@ -1,10 +1,16 @@
+
+defaults: &defaults
+  environment:
+    - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/circle2"
+  macos:
+    xcode: "9.0"
+
+
 version: 2
 jobs:
+
   dependencies:
-    environment:
-      - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/circle2"
-    macos:
-      xcode: "9.0"
+    <<: *defaults
     steps:
     - checkout
     - restore_cache:
@@ -17,11 +23,10 @@ jobs:
     - save_cache:
         key: v2-{{ checksum "Cartfile.resolved" }}
         paths: Carthage/Build
+
+
   build:
-    environment:
-      - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/circle2"
-    macos:
-      xcode: "9.0"
+    <<: *defaults
     steps:
     - checkout
     - restore_cache:
@@ -40,11 +45,10 @@ jobs:
         paths: DerivedData
     - store_artifacts:
         path: xcode_build.log
+
+
   test:
-    environment:
-      - DEPENDENCIES_BASE_URL: "https://raw.githubusercontent.com/wireapp/wire-ios-shared-resources/circle2"
-    macos:
-      xcode: "9.0"
+    <<: *defaults
     steps:
     - checkout
     - restore_cache:
@@ -66,6 +70,7 @@ jobs:
         path: junit/tests.xml
 
 
+# ----------------WORKFLOWS----------------
 workflows:
   version: 2
   build-and-test:
