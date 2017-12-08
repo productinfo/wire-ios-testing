@@ -23,6 +23,10 @@ buildfiles_cache: &buildfiles_cache
   key: v2-{{ .Revision }}
   paths: DerivedData
 
+# ------------Ruby version----------------
+set-ruby-version: &set-ruby-version
+    name: "Set Ruby Version"
+    command:  echo "ruby-2.3" > ~/.ruby-version
 
 version: 2
 jobs:
@@ -33,9 +37,7 @@ jobs:
     - checkout
     - restore_cache: *gems_cache
     - restore_cache: *carthage_cache
-    - run:
-        name: "Set Ruby Version"
-        command:  echo "ruby-2.3" > ~/.ruby-version
+    - run: *set-ruby-version
     - run: 
         name: "Get dependencies"
         command: |
@@ -50,6 +52,7 @@ jobs:
     - checkout
     - restore_cache: *gems_cache
     - restore_cache: *carthage_cache
+    - run: *set-ruby-version
     - run: 
         name: "Download scripts"
         command: |
@@ -71,6 +74,7 @@ jobs:
     - restore_cache: *gems_cache
     - restore_cache: *carthage_cache
     - restore_cache: *buildfiles_cache
+    - run: *set-ruby-version
     - run: 
         name: "Download scripts"
         command: |
