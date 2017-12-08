@@ -71,7 +71,7 @@ jobs:
     - store_artifacts:
         path: SnapshotResults
     - store_test_results:
-        path: junit/tests.xml
+        path: junit
 
 
 # ----------------WORKFLOWS----------------
