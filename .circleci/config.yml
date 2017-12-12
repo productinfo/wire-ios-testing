@@ -27,8 +27,8 @@ buildfiles_cache: &buildfiles_cache
 download_environment: &download_environment
   name: "Download environment"
   command: |
-    mkdir build_scripts
-    cd build_scripts
+    mkdir build_scripts && 
+    cd build_scripts &&
     curl -O "${DEPENDENCIES_BASE_URL}/environment.sh"
 
 setup_environment: &setup_environment
