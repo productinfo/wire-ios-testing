@@ -33,8 +33,7 @@ download_environment: &download_environment
 
 setup_environment: &setup_environment
   name: "Setup environment"
-  command: |
-    bash build_scripts/environment.sh
+  command: bash build_scripts/environment.sh
 
 version: 2
 jobs:
@@ -49,19 +48,17 @@ jobs:
     - restore_cache: *carthage_cache
     - run: 
         name: "Get dependencies"
-        command: bash dependencies.sh
+        command: bash build_scripts/dependencies.sh
     - run: 
         name: "Build"
-        command: bash build.sh
+        command: bash build_scripts/build.sh
     - save_cache: *gems_cache
     - save_cache: *carthage_cache
     - persist_to_workspace:
         root: .
         paths: 
           - DerivedData/Build/Products/*
-          - build_scripts
-    - store_artifacts:
-        path: xcode_build.log
+          - build_scripts/
     - store_artifacts:
         path: build_scripts
 
@@ -77,14 +74,10 @@ jobs:
     - restore_cache: *carthage_cache
     - run: 
         name: "Test"
-        command: bash test.sh
+        command: bash build_scripts/test.sh
     - run: 
         name: "Post test"
-        command: bash post_test.sh
-    - store_artifacts:
-        path: xcode_test.log
-    - store_artifacts:
-        path: build_scripts
+        command: bash build_scripts/post_test.sh
     - store_artifacts:
         path: SnapshotResults
     - store_test_results:
