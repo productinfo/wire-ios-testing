@@ -58,7 +58,7 @@ jobs:
     - persist_to_workspace:
         root: .
         paths: 
-          - DerivedDataBuild/Products/*
+          - DerivedData/Build/Products/*
           - build_scripts
     - store_artifacts:
         path: xcode_build.log
@@ -67,11 +67,11 @@ jobs:
     <<: *defaults
     steps:
     - checkout
+    - attach_workspace:
+        at: .
     - run: *setup_environment
     - restore_cache: *gems_cache
     - restore_cache: *carthage_cache
-    - attach_workspace:
-        at: .
     - run: 
         name: "Test"
         command: bash test.sh
