@@ -24,16 +24,11 @@ buildfiles_cache: &buildfiles_cache
   paths: DerivedData
 
 # ------------Environment-----------------
-download_environment: &download_environment
-  name: "Download environment"
-  command: |
-    mkdir build_scripts && 
-    cd build_scripts &&
-    curl -O "${DEPENDENCIES_BASE_URL}/environment.sh"
-
 setup_environment: &setup_environment
   name: "Setup environment"
-  command: bash build_scripts/environment.sh
+  command: |
+    curl -O "${DEPENDENCIES_BASE_URL}/environment.sh"
+    bash environment.sh
 
 version: 2
 jobs:
@@ -42,26 +37,21 @@ jobs:
     <<: *defaults
     steps:
     - checkout
-    - run: *download_environment
     - run: *setup_environment
     - restore_cache: *gems_cache
     - restore_cache: *carthage_cache
     - run: 
         name: "Get dependencies"
-        command: bash build_scripts/dependencies.sh
+        command: bash dependencies.sh
     - run: 
         name: "Build"
-        command: bash build_scripts/build.sh
+        command: bash build.sh
     - save_cache: *gems_cache
     - save_cache: *carthage_cache
     - persist_to_workspace:
         root: .
         paths: 
           - DerivedData/Build/Products/*
-          - build_scripts/
-    - store_artifacts:
-        path: build_scripts
-
 
   test:
     <<: *defaults
@@ -74,10 +64,10 @@ jobs:
     - restore_cache: *carthage_cache
     - run: 
         name: "Test"
-        command: bash build_scripts/test.sh
+        command: bash test.sh
     - run: 
         name: "Post test"
-        command: bash build_scripts/post_test.sh
+        command: bash post_test.sh
     - store_artifacts:
         path: SnapshotResults
     - store_test_results:
