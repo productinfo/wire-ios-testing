@@ -62,6 +62,9 @@ jobs:
           - build_scripts
     - store_artifacts:
         path: xcode_build.log
+    - store_artifacts:
+        path: build_scripts
+
 
   test:
     <<: *defaults
@@ -79,7 +82,9 @@ jobs:
         name: "Post test"
         command: bash post_test.sh
     - store_artifacts:
-        path: xcode_build.log
+        path: xcode_test.log
+    - store_artifacts:
+        path: build_scripts
     - store_artifacts:
         path: SnapshotResults
     - store_test_results:
